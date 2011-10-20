@@ -136,7 +136,8 @@ public class CsvReader {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		
+
+            /* HA.Part of Original Code
 		//CsvReader in = new CsvReader("E:\\DnB\\content\\atlas.1k.txt");
 		String data[] = CsvReader.readParticularRow(2);
 		
@@ -144,8 +145,15 @@ public class CsvReader {
 			
 			LinkageInfoVo inofVo = new LinkageInfoVo(data, false);			
 			System.out.println(inofVo.toString());
-					
-		
-	}
+            */			
+
+            CsvReader reader = new CsvReader(args[0]);
+            String[] data = reader.readLine();
+            while(data != null){
+                LinkageInfoVo inofVo = new LinkageInfoVo(data,true);
+                System.out.println(inofVo.toString());
+                data = reader.readLine();
+            }
+        }
 
 }

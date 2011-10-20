@@ -1,0 +1,214 @@
+InfiniteGraph Performance Evaluation
+====================================
+
+The following performance testing use small interconnected sub-graphs (relationships: hierarchal / parent - child). Each of the traversals resolves a vertex from an index then retrieves that vertex's subgraph (all of the child vertexes). Infintegraph shows linear scaling from 10^5 nodes to 10^7 nodes.
+
+Traversal speed summary:
+Frigid - ~ 300 milliseconds (database is not open, schema is not loaded, graph is not cached)
+Cold -  ~ 90 milliseconds (database is open, schema is loaded, *graph is not cached*)
+Warm - ~ 10 milliseconds (database is open, schema is loaded, *graph is cached in-memory*)
+Hot - ~ 1 millisecond (vertex existence, no traversals, graph is cached)
+
+In the worst case these traversals are taking 0.3 seconds (without opening the database / schema), after the first run each traversal takes about 8-14 milliseconds. The first traversal will always be slower then things speed up really fast. The first traversal opens the database this is the main reason why it is slower. If there are no results found the times should be less than 1-2ms, which is basically the level of the timing accuracy. At a sample run with 1M records for 100 different traversals. There will be about 2~3M vertices and a lot more edges. We saw linear scaling at small and large graph sizes (traversal speed invariant).
+
+
+Sample runs:
+------------
+
+Run 1:
+10 traversals @ 25000 records
+Starting test
+Number retrieved: 8 Processing time = 96 milliseconds (without database opening: 390 milliseconds)
+Number retrieved: 5 Processing time = 15 milliseconds
+Number retrieved: 5 Processing time = 13 milliseconds
+Number retrieved: 7 Processing time = 12 milliseconds
+Number retrieved: 4 Processing time = 14 milliseconds
+Number retrieved: 9 Processing time = 12 milliseconds
+Number retrieved: 7 Processing time = 11 milliseconds
+Number retrieved: 2 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 12 milliseconds
+Number retrieved: 5 Processing time = 12 milliseconds
+Completed test
+
+Run 2:
+20 traversals @ 25000 records
+Starting test
+Type : com.linkage.domain.GlobalUltimateEdge = 1000005
+Type : com.linkage.domain.OwnerEdge = 1000003
+Number retrieved: 2 Processing time = 97 milliseconds (without database opening: 395 milliseconds)
+Number retrieved: 4 Processing time = 12 milliseconds
+Number retrieved: 3 Processing time = 11 milliseconds
+Number retrieved: 2 Processing time = 8 milliseconds
+Number retrieved: 2 Processing time = 14 milliseconds
+Number retrieved: 4 Processing time = 11 milliseconds
+Number retrieved: 9 Processing time = 11 milliseconds
+Number retrieved: 8 Processing time = 12 milliseconds
+Number retrieved: 6 Processing time = 12 milliseconds
+Number retrieved: 3 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 5 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 15 milliseconds
+Number retrieved: 4 Processing time = 8 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 8 milliseconds
+Number retrieved: 2 Processing time = 10 milliseconds
+Completed test
+
+Run 3:
+100 traversals @ 1000000 records
+Starting test
+Number retrieved: 5 Processing time = 97 milliseconds (without database opening: 397 milliseconds)
+Number retrieved: 8 Processing time = 15 milliseconds
+Number retrieved: 5 Processing time = 12 milliseconds
+Number retrieved: 4 Processing time = 12 milliseconds
+Number retrieved: 4 Processing time = 15 milliseconds
+Number retrieved: 5 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 11 milliseconds
+Number retrieved: 4 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 14 milliseconds
+Number retrieved: 2 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 12 milliseconds
+Number retrieved: 3 Processing time = 11 milliseconds
+Number retrieved: 2 Processing time = 12 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 6 Processing time = 10 milliseconds
+Number retrieved: 4 Processing time = 11 milliseconds
+Number retrieved: 1 Processing time = 7 milliseconds
+Number retrieved: 7 Processing time = 16 milliseconds
+Number retrieved: 1 Processing time = 8 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 5 Processing time = 13 milliseconds
+Number retrieved: 7 Processing time = 15 milliseconds
+Number retrieved: 6 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 11 milliseconds
+Number retrieved: 2 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 15 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 6 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 2 Processing time = 7 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 10 Processing time = 14 milliseconds
+Number retrieved: 2 Processing time = 8 milliseconds
+Number retrieved: 1 Processing time = 6 milliseconds
+Number retrieved: 8 Processing time = 12 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 6 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 11 milliseconds
+Number retrieved: 1 Processing time = 7 milliseconds
+Number retrieved: 5 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 3 Processing time = 9 milliseconds
+Number retrieved: 3 Processing time = 13 milliseconds
+Number retrieved: 5 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 7 milliseconds
+Number retrieved: 3 Processing time = 7 milliseconds
+Number retrieved: 4 Processing time = 10 milliseconds
+Number retrieved: 6 Processing time = 13 milliseconds
+Number retrieved: 4 Processing time = 8 milliseconds
+Number retrieved: 8 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 7 milliseconds
+Number retrieved: 3 Processing time = 9 milliseconds
+Number retrieved: 5 Processing time = 11 milliseconds
+Number retrieved: 5 Processing time = 11 milliseconds
+Number retrieved: 2 Processing time = 7 milliseconds
+Number retrieved: 6 Processing time = 9 milliseconds
+Number retrieved: 5 Processing time = 13 milliseconds
+Number retrieved: 1 Processing time = 7 milliseconds
+Number retrieved: 5 Processing time = 9 milliseconds
+Number retrieved: 7 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 9 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 3 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 8 Processing time = 12 milliseconds
+Number retrieved: 6 Processing time = 10 milliseconds
+Number retrieved: 7 Processing time = 13 milliseconds
+Number retrieved: 8 Processing time = 11 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 4 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 12 milliseconds
+Number retrieved: 4 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 12 milliseconds
+Number retrieved: 2 Processing time = 10 milliseconds
+Number retrieved: 7 Processing time = 18 milliseconds
+Number retrieved: 1 Processing time = 11 milliseconds
+Number retrieved: 5 Processing time = 15 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 5 Processing time = 13 milliseconds
+Number retrieved: 6 Processing time = 10 milliseconds
+Number retrieved: 3 Processing time = 9 milliseconds
+Number retrieved: 3 Processing time = 10 milliseconds
+Number retrieved: 5 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 12 milliseconds
+Number retrieved: 5 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 2 Processing time = 8 milliseconds
+Number retrieved: 1 Processing time = 9 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 2 Processing time = 9 milliseconds
+Number retrieved: 2 Processing time = 7 milliseconds
+Number retrieved: 3 Processing time = 8 milliseconds
+Number retrieved: 4 Processing time = 11 milliseconds
+Number retrieved: 4 Processing time = 10 milliseconds
+Number retrieved: 4 Processing time = 9 milliseconds
+Number retrieved: 2 Processing time = 7 milliseconds
+Completed test
+
+
+Data Generation:
+----------------
+All reported times is elapsed/clock time 
+25K nodes
+*This is using Standard ingestion, accelerated ingestion (automated parallel pipeline) will be faster*
+Here are the ingest times, (since they are interested in records/transaction) -
+
+Records/transaction     Time to ingest 25K records (seconds)
+10                      232
+100                     79
+500                     60
+1000                    54
+10000                   48
+ALL                     48
+
+
+To run the script to generate 25K, 1M nodes with 5 children (on average) you would do. 
+*Note, pregenerated csv @ 25k and 1M are included in the resources directory of the project.*
+
+- python gen_csv_data.py -d100000000 -s25000 -p5000 -odata_25K.csv
+- python gen_csv_data.py -d100000000 -s1000000 -p200000 -odata_1M.csv
+
+The (-d100000000) will almost guarantee you that the children are almost unique.
+
+It is the ratio of the arguments s/p which determines the average number of children.
+
+The parents (publishers) in this case starts with the id (DUNS) 2B (billion) to 2B+p and the children from 1B to 1B+s.
+
+To check if this true using the csv file do:
+
+grep 2000004452 * | wc -l
+
+You should on average get the number of (p/s).
+
+
+Hardware Overview:
+------------------
+ Model Name:   MacBook Pro
+ Model Identifier: MacBookPro6,1
+ Processor Name: Intel Core i7
+ Processor Speed: 2.8 GHz
+ Number Of Processors: 1
+ Total Number Of Cores:  2
+ L2 Cache (per core):  256 KB
+ L3 Cache:     4 MB
+ Memory:       8 GB
+ Processor Interconnect Speed: 4.8 GT/s
+
+

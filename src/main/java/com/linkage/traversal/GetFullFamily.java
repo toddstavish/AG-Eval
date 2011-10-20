@@ -23,7 +23,7 @@ public class GetFullFamily{
     public static void main(String[] args){
         GetFullFamily o = new GetFullFamily();
         System.out.println("Starting test");
-        o.test(args[0], "a");
+        o.test(args[0],args[1]);
         System.out.println("Completed test");
     }
     

@@ -81,7 +81,7 @@ public class GlobalUltimateFactory {
 	public void addGlobalUltimate(Subject gu) {
 		
 		String dunsNbr = gu.getDunsNumber();
-		logger.info("Adding new Global Ultimate node DUNS: {}", dunsNbr);
+		//logger.info("Adding new Global Ultimate node DUNS: {}", dunsNbr);
 		
 		//try to remove first
 		removeGlobalUltimateByDuns(dunsNbr);
