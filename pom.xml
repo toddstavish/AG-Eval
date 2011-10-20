@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.linkage</groupId>
-    <artifactId>AllianceTesting</artifactId>
+    <artifactId>AGTesting</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Alliance Global Testing</name>
+    <name>AG Testing</name>
     <url>http://maven.apache.org</url>
 
     <properties>
